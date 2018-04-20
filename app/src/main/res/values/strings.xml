@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">AgendaTelefonicaMarcoAvaliativo1</string>
+    <string name="id">id</string>
+    <string name="nome">nome</string>
+    <string name="ddd">ddd</string>
+    <string name="elefone">telefone</string>
+    <string name="codCidade">Codigo da Cidade</string>
+    <string name="codOperadora">Codigo da Operadora</string>
+    <string name="salvarPreferencias">Salvar</string>
+    <string name="cancelarPreferencias">Cancelar</string>
 </resources>
