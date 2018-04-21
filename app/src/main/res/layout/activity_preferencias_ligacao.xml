@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SharedPreferences">
+    tools:context=".PreferenciasLigacao">
 
     <TextView
         android:layout_width="match_parent"
@@ -32,12 +32,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/salvarPreferencias"
-            android:id="@+id/salvarPref"/>
+            android:onClick="salvar"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/cancelarPreferencias"
-            android:id="@+id/cancelarPref"/>
+            android:onClick="cancelar"/>
 
 </LinearLayout>
