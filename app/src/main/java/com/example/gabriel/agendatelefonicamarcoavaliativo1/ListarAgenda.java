@@ -1,9 +1,14 @@
 package com.example.gabriel.agendatelefonicamarcoavaliativo1;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +21,9 @@ public class ListarAgenda extends AppCompatActivity {
 
     private ListView lista;
 
+    private static final int REQUEST_CALL = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +33,7 @@ public class ListarAgenda extends AppCompatActivity {
 
         final Cursor cursor = crud.carregaDados();
 
-        String[] nomeCampos = new String[]{CriaAgenda.ID, CriaAgenda.NOME, CriaAgenda.DDD, CriaAgenda.TELEFONE};
+        final String[] nomeCampos = new String[]{CriaAgenda.ID, CriaAgenda.NOME, CriaAgenda.DDD, CriaAgenda.TELEFONE};
 
         int[] idViews = new int[]{R.id.IdContato, R.id.IdNome, R.id.Idddd, R.id.IdTelefone};
 
@@ -37,6 +45,8 @@ public class ListarAgenda extends AppCompatActivity {
 
         lista = (ListView) findViewById(R.id.listView);
         lista.setAdapter(adaptador);
+
+        String telefones = cursor.getString(cursor.getColumnIndexOrThrow(CriaAgenda.TELEFONE));
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -54,15 +64,26 @@ public class ListarAgenda extends AppCompatActivity {
             }
         });
 
-    }
+        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                cursor.moveToPosition(position);
 
-    //botao = (Button) findViewById(R.id.cadastrarNovoContato);
+                String telefones = cursor.getString(cursor.getColumnIndexOrThrow(CriaAgenda.TELEFONE));
 
-    public void cadastrarNovoContato(View view){
+                //Toast.makeText(getApplicationContext(), "Telefone: " + telefones, Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+                Uri uri = Uri.parse("tel:"+telefones);
+
+                Intent intent = new Intent(Intent.ACTION_CALL, uri);
+
+                if(ActivityCompat.checkSelfPermission(ListarAgenda.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(ListarAgenda.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                }
+                startActivity(intent);
+                return true;
+            }
+        });
+
     }
 }
-
-
